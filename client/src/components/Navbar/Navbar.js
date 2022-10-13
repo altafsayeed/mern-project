@@ -10,27 +10,34 @@ const Navbar = () => {
 
   const user = null;
 
+  const refreshPage = function () {
+    setTimeout(function () {
+      window.location.reload();
+    }, 1);
+  };
+
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <div className={classes.brandContainer}>
           <Typography
             component={Link}
             to="/"
             className={classes.heading}
             variant="h2"
             align="center"
+            onClick={refreshPage}
           >
             Memories
           </Typography>
-        </BrowserRouter>
-        <img
-          className={classes.image}
-          src={memories}
-          alt="memories"
-          height="60"
-        />
-      </div>
+          <img
+            className={classes.image}
+            src={memories}
+            alt="memories"
+            height="60"
+          />
+        </div>
+      </BrowserRouter>
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
