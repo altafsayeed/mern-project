@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Link } from "react-router-dom";
 import { AppBar, Typography, Toolbar, Button, Avatar } from "@material-ui/core";
-
+//import { user } from "../Auth/Auth";
+//import { userObject } from "../Auth/Auth";
 import useStyles from "./styles";
 import memories from "../../images/memories.png";
 
 const Navbar = () => {
   const classes = useStyles();
-
   const user = null;
+  //console.log(JSON.stringify(localStorage.getItem("profile")));
+  //setUser(localStorage.getItem("profile"));
+  //const user = { user };
 
   const refreshPage = function () {
     setTimeout(function () {
