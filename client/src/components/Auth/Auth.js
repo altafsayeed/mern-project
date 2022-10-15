@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-//import axios from "axios";
-import jwt_decode from "jwt-decode";
 import {
   Avatar,
   Button,
@@ -10,92 +8,49 @@ import {
   Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-//import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import useStyles from "./styles";
 import Input from "./Input";
-//import { AUTH } from "../../constants/actionTypes";
+import { signin, signup } from "../../actions/auth";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const classes = useStyles();
-  //let [user, setUser] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleChange = () => {};
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signin(formData, history));
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
-
-  // const createOrGetUser = async (response) => {
-  //   const decoded { name, picture, sub } = jwt_decode(
-  //     response.credential
-  //   );
-
-  //   const { name, picture, sub } = decoded;
-
-  //   const user = {
-  //     _id: sub.trim,
-  //     _type: "user",
-  //     userName: name,
-  //     image: picture,
-  //   };
-
-  //   await axios.post(`http://localhost:3000/api/auth`, user);
-  // };
-
-  // const googleSuccess = async (res) => {
-  //   const result = res?.profileObj;
-  //   const token = res?.tokenId;
-
-  //   try {
-  //     dispatch({ type: "AUTH", data: { result, token } });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const googleFailure = (error) => {
-  //   console.log(error);
-  //   console.log("Google Sign In was unsuccessful.");
-  // };
-
-  function handleCallbackResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
-    var userObject = jwt_decode(response.credential);
-    console.log(userObject);
-    //user = userObject;
-    document.getElementById("signInDiv").hidden = true;
-
-    //localStorage.setItem("profile", response.credential);
-    //return userObject;
-  }
-
-  function handleSignOut(event) {
-    document.getElementById("signInDiv").hidden = false;
-  }
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id:
-        "438141775663-6f9r3uptsdp8d76orvqtt64vce5dqgd7.apps.googleusercontent.com",
-      callback: handleCallbackResponse,
-    });
-
-    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-      theme: "outline",
-      size: "large",
-    });
-  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -163,8 +118,6 @@ const Auth = () => {
             className={classes.googleButton}
             cookiePolicy="single_host_origin"
           /> */}
-          <div id="signInDiv"></div>
-          <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
